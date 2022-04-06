@@ -11,7 +11,6 @@ ext {
     room_version = '2.4.2'
     coroutine_version = '1.6.0-native-mt'
     rv_animator_version = '4.0.2'
-    data_binding_version = '7.1.1'
 }
 
 task clean(type: Delete) {

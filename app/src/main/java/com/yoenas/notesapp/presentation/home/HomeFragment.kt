@@ -30,6 +30,8 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private val homeViewModel by viewModels<NotesViewModel>()
 
+    private var currentData = emptyList<Notes>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +58,7 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
                 checkIfDatabaseEmpty(it)
                 homeAdapter.setData(it)
                 scheduleLayoutAnimation()
+                currentData = it
             }
             adapter = homeAdapter
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -83,15 +86,13 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun restoreDeletedData(view: View, deletedItem: Notes) {
-        val snackBar = Snackbar.make(
-            view, "Deleted: '${deletedItem.title}'",
-            Snackbar.LENGTH_LONG
-        )
-        snackBar.setTextColor(ContextCompat.getColor(view.context, R.color.black))
-        snackBar.setAction("Undo") {
-            homeViewModel.insertData(deletedItem)
-        }
-        snackBar.show()
+        Snackbar.make(view, "Deleted: '${deletedItem.title}'", Snackbar.LENGTH_LONG)
+            .setTextColor(ContextCompat.getColor(view.context, R.color.black))
+            .setAction("Undo") {
+                homeViewModel.insertData(deletedItem)
+            }
+            .setActionTextColor(ContextCompat.getColor(view.context, R.color.black))
+            .show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -116,20 +117,28 @@ class HomeFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     private fun deleteAllData() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Delete Everything?")
-            .setMessage("Are you sure want to remove everything?")
-            .setPositiveButton("Yes") { _, _ ->
-                homeViewModel.deleteAllData()
-                Toast.makeText(
-                    requireContext(),
-                    "Successfully Removed Everything",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-            .setNegativeButton("No", null)
-            .create()
-            .show()
+        if (currentData.isEmpty()) {
+            AlertDialog.Builder(requireContext()).setTitle("No Data Found.")
+                .setMessage("No data found for deletes.")
+                .setPositiveButton("Ok") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            AlertDialog.Builder(requireContext())
+                .setTitle("Delete Everything?")
+                .setMessage("Are you sure want to remove everything?")
+                .setPositiveButton("Yes") { _, _ ->
+                    homeViewModel.deleteAllData()
+                    Toast.makeText(
+                        requireContext(),
+                        "Successfully Removed Everything",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {

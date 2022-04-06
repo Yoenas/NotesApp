@@ -47,13 +47,7 @@ class DetailFragment : Fragment() {
         when (item.itemId) {
             R.id.menu_update -> {
                 val action = DetailFragmentDirections.actionDetailFragmentToUpdateFragment(
-                    Notes(
-                        navArgs.currentItem.id,
-                        navArgs.currentItem.title,
-                        navArgs.currentItem.priority,
-                        navArgs.currentItem.description,
-                        navArgs.currentItem.date
-                    )
+                    navArgs.currentItem
                 )
                 findNavController().navigate(action)
             }

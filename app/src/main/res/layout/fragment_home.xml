@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toEndOf="@+id/rv_notes"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.36" />
+            app:layout_constraintVertical_bias="0.46" />
 
         <TextView
             android:id="@+id/tv_no_data"
