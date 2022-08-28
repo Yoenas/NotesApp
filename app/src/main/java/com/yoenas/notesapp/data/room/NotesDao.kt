@@ -7,11 +7,11 @@ import com.yoenas.notesapp.data.entity.Notes
 @Dao
 interface NotesDao {
 
-    @Query("SELECT * FROM notes_table ORDER BY id ASC")
-    fun getAllNotes(): LiveData<List<Notes>>
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertNotes(notes: Notes)
+
+    @Query("SELECT * FROM notes_table ORDER BY id ASC")
+    fun getAllNotes(): LiveData<List<Notes>>
 
     @Update
     suspend fun updateNotes(notes: Notes)
