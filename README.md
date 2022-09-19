@@ -1,6 +1,9 @@
 # NotesApp
 RPL IDN Learning, Source Code Project 6
 
+| <img src="/images/mockup.png"/> |
+| :--: |
+
 ## In this project I have learn about:
 - Custom ActionBar using MaterialToolbar
 - setHasOptionsMenu on Fragment with different menu each fragment
